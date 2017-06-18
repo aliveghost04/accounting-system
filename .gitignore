@@ -1,0 +1,4 @@
+ProyectoPropietaria/bin
+ProyectoPropietaria/obj
+packages/*
+!packages/.gitkeep
