@@ -17,8 +17,8 @@ namespace ProyectoPropietaria
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(IniciarSesion.getInstance());
-            //Application.Run(new Contabilidad(new User("Erick", 3)));
+            // Application.Run(IniciarSesion.getInstance());
+            Application.Run(new Contabilidad(new User("Erick", 3)));
         }
     }
 }

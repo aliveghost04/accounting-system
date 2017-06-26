@@ -29,12 +29,12 @@ namespace ProyectoPropietaria
 
         private void cuentasContablesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new CuentaContable().Show();
+            // new CuentaContable().Show();
         }
 
         private void tiposDeCuentasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //new TipoCuenta().Show();
+            // new TipoCuenta().Show();
         }
 
         private void tiposDeMonedasToolStripMenuItem_Click(object sender, EventArgs e)
@@ -44,7 +44,7 @@ namespace ProyectoPropietaria
 
         private void entradaContableToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new EntradaContable().Show();
+            // new EntradaContable().Show();
         }
 
         private void cRUDToolStripMenuItem_Click(object sender, EventArgs e)
@@ -97,6 +97,18 @@ namespace ProyectoPropietaria
             MnjTipoMoneda mnjTipoMoneda = MnjTipoMoneda.getInstance();
             mnjTipoMoneda.Show();
             mnjTipoMoneda.Focus();
+        }
+
+        private void btnPlacements_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCountablesAccounts_Click(object sender, EventArgs e)
+        {
+            MnjCuentaContable instance = MnjCuentaContable.getInstance();
+            instance.Show();
+            instance.Focus();
         }
     }
 }

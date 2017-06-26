@@ -33,16 +33,16 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
+            this.txtDescription = new System.Windows.Forms.TextBox();
+            this.cbType = new System.Windows.Forms.ComboBox();
+            this.chkbAllowTransactions = new System.Windows.Forms.CheckBox();
+            this.cbLevel = new System.Windows.Forms.ComboBox();
+            this.cbMajorAccount = new System.Windows.Forms.ComboBox();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.rbActive = new System.Windows.Forms.RadioButton();
+            this.rbInactive = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // label1
@@ -92,108 +92,120 @@
             this.label6.Text = "Cuenta Mayor";
             this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
-            // label7
+            // txtDescription
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 221);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(46, 13);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "Balance";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
+            this.txtDescription.Location = new System.Drawing.Point(172, 55);
+            this.txtDescription.Name = "txtDescription";
+            this.txtDescription.Size = new System.Drawing.Size(100, 20);
+            this.txtDescription.TabIndex = 8;
+            // 
+            // cbType
+            // 
+            this.cbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbType.FormattingEnabled = true;
+            this.cbType.Location = new System.Drawing.Point(172, 91);
+            this.cbType.Name = "cbType";
+            this.cbType.Size = new System.Drawing.Size(100, 21);
+            this.cbType.TabIndex = 10;
+            // 
+            // chkbAllowTransactions
+            // 
+            this.chkbAllowTransactions.AutoSize = true;
+            this.chkbAllowTransactions.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkbAllowTransactions.Location = new System.Drawing.Point(12, 123);
+            this.chkbAllowTransactions.Name = "chkbAllowTransactions";
+            this.chkbAllowTransactions.Size = new System.Drawing.Size(142, 17);
+            this.chkbAllowTransactions.TabIndex = 11;
+            this.chkbAllowTransactions.Text = "¿Permite transacciones?";
+            this.chkbAllowTransactions.UseVisualStyleBackColor = true;
+            // 
+            // cbLevel
+            // 
+            this.cbLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbLevel.FormattingEnabled = true;
+            this.cbLevel.Location = new System.Drawing.Point(172, 155);
+            this.cbLevel.Name = "cbLevel";
+            this.cbLevel.Size = new System.Drawing.Size(100, 21);
+            this.cbLevel.TabIndex = 12;
+            this.cbLevel.SelectedIndexChanged += new System.EventHandler(this.cbLevel_SelectedIndexChanged);
+            // 
+            // cbMajorAccount
+            // 
+            this.cbMajorAccount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMajorAccount.FormattingEnabled = true;
+            this.cbMajorAccount.Location = new System.Drawing.Point(172, 187);
+            this.cbMajorAccount.Name = "cbMajorAccount";
+            this.cbMajorAccount.Size = new System.Drawing.Size(100, 21);
+            this.cbMajorAccount.TabIndex = 14;
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(160, 259);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 15;
+            this.btnSave.Text = "Guardar";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(55, 259);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 16;
+            this.btnCancel.Text = "Cancelar";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(12, 253);
+            this.label8.Location = new System.Drawing.Point(12, 222);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(40, 13);
             this.label8.TabIndex = 7;
             this.label8.Text = "Estado";
             this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
-            // textBox1
+            // rbActive
             // 
-            this.textBox1.Location = new System.Drawing.Point(172, 55);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 8;
+            this.rbActive.AutoSize = true;
+            this.rbActive.Checked = true;
+            this.rbActive.Location = new System.Drawing.Point(121, 220);
+            this.rbActive.Name = "rbActive";
+            this.rbActive.Size = new System.Drawing.Size(67, 17);
+            this.rbActive.TabIndex = 17;
+            this.rbActive.TabStop = true;
+            this.rbActive.Text = "Activado";
+            this.rbActive.UseVisualStyleBackColor = true;
             // 
-            // textBox2
+            // rbInactive
             // 
-            this.textBox2.Location = new System.Drawing.Point(172, 218);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 9;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(172, 91);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(100, 21);
-            this.comboBox1.TabIndex = 10;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox1.Location = new System.Drawing.Point(12, 123);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(142, 17);
-            this.checkBox1.TabIndex = 11;
-            this.checkBox1.Text = "¿Permite transacciones?";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(172, 155);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(100, 21);
-            this.comboBox2.TabIndex = 12;
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(172, 253);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(100, 21);
-            this.comboBox3.TabIndex = 13;
-            // 
-            // comboBox4
-            // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(172, 187);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(100, 21);
-            this.comboBox4.TabIndex = 14;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(102, 293);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "Guardar";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.rbInactive.AutoSize = true;
+            this.rbInactive.Location = new System.Drawing.Point(194, 220);
+            this.rbInactive.Name = "rbInactive";
+            this.rbInactive.Size = new System.Drawing.Size(85, 17);
+            this.rbInactive.TabIndex = 18;
+            this.rbInactive.Text = "Desactivado";
+            this.rbInactive.UseVisualStyleBackColor = true;
             // 
             // CuentaContable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 328);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.comboBox4);
-            this.Controls.Add(this.comboBox3);
-            this.Controls.Add(this.comboBox2);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.ClientSize = new System.Drawing.Size(284, 294);
+            this.ControlBox = false;
+            this.Controls.Add(this.rbInactive);
+            this.Controls.Add(this.rbActive);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.cbMajorAccount);
+            this.Controls.Add(this.cbLevel);
+            this.Controls.Add(this.chkbAllowTransactions);
+            this.Controls.Add(this.cbType);
+            this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label3);
@@ -201,6 +213,7 @@
             this.Controls.Add(this.label1);
             this.Name = "CuentaContable";
             this.Text = "Cuenta Contable";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CuentaContable_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -213,15 +226,15 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtDescription;
+        private System.Windows.Forms.ComboBox cbType;
+        private System.Windows.Forms.CheckBox chkbAllowTransactions;
+        private System.Windows.Forms.ComboBox cbLevel;
+        private System.Windows.Forms.ComboBox cbMajorAccount;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.ComboBox comboBox4;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.RadioButton rbActive;
+        private System.Windows.Forms.RadioButton rbInactive;
     }
 }

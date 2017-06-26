@@ -82,10 +82,12 @@ namespace ProyectoPropietaria
             if (accountType.state)
             {
                 rbActive.Checked = true;
+                rbInactive.Checked = false;
             }
             else
             {
                 rbInactive.Checked = true;
+                rbActive.Checked = false;
             }
 
             // End fill fields

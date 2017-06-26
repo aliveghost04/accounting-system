@@ -96,6 +96,18 @@
     <Compile Include="IniciarSesion.Designer.cs">
       <DependentUpon>IniciarSesion.cs</DependentUpon>
     </Compile>
+    <Compile Include="MnjCuentaContable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MnjCuentaContable.Designer.cs">
+      <DependentUpon>MnjCuentaContable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MnjEntradaContable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MnjEntradaContable.Designer.cs">
+      <DependentUpon>MnjEntradaContable.cs</DependentUpon>
+    </Compile>
     <Compile Include="MnjTipoCuenta.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -155,6 +167,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="IniciarSesion.resx">
       <DependentUpon>IniciarSesion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MnjCuentaContable.resx">
+      <DependentUpon>MnjCuentaContable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MnjEntradaContable.resx">
+      <DependentUpon>MnjEntradaContable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MnjTipoCuenta.resx">
       <DependentUpon>MnjTipoCuenta.cs</DependentUpon>

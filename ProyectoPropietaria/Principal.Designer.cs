@@ -43,11 +43,11 @@
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.label1 = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnCountablesAccounts = new System.Windows.Forms.Button();
             this.btnAccountTypes = new System.Windows.Forms.Button();
             this.btnCurrenciesTypes = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
+            this.btnPlacements = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -175,14 +175,15 @@
             this.lblName.TabIndex = 4;
             this.lblName.Text = "Usuario";
             // 
-            // button1
+            // btnCountablesAccounts
             // 
-            this.button1.Location = new System.Drawing.Point(12, 47);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(119, 45);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Catálogo de Cuentas Contables";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnCountablesAccounts.Location = new System.Drawing.Point(12, 47);
+            this.btnCountablesAccounts.Name = "btnCountablesAccounts";
+            this.btnCountablesAccounts.Size = new System.Drawing.Size(119, 45);
+            this.btnCountablesAccounts.TabIndex = 5;
+            this.btnCountablesAccounts.Text = "Cuentas Contables";
+            this.btnCountablesAccounts.UseVisualStyleBackColor = true;
+            this.btnCountablesAccounts.Click += new System.EventHandler(this.btnCountablesAccounts_Click);
             // 
             // btnAccountTypes
             // 
@@ -213,14 +214,15 @@
             this.button5.Text = "Mayorización";
             this.button5.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // btnPlacements
             // 
-            this.button6.Location = new System.Drawing.Point(172, 47);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(119, 45);
-            this.button6.TabIndex = 8;
-            this.button6.Text = "Entrada Contable";
-            this.button6.UseVisualStyleBackColor = true;
+            this.btnPlacements.Location = new System.Drawing.Point(172, 47);
+            this.btnPlacements.Name = "btnPlacements";
+            this.btnPlacements.Size = new System.Drawing.Size(119, 45);
+            this.btnPlacements.TabIndex = 8;
+            this.btnPlacements.Text = "Entrada Contable";
+            this.btnPlacements.UseVisualStyleBackColor = true;
+            this.btnPlacements.Click += new System.EventHandler(this.btnPlacements_Click);
             // 
             // Contabilidad
             // 
@@ -228,10 +230,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 262);
             this.Controls.Add(this.button5);
-            this.Controls.Add(this.button6);
+            this.Controls.Add(this.btnPlacements);
             this.Controls.Add(this.btnCurrenciesTypes);
             this.Controls.Add(this.btnAccountTypes);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnCountablesAccounts);
             this.Controls.Add(this.lblName);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.statusStrip1);
@@ -269,11 +271,11 @@
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblName;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnCountablesAccounts;
         private System.Windows.Forms.Button btnAccountTypes;
         private System.Windows.Forms.Button btnCurrenciesTypes;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button btnPlacements;
     }
 }
 
