@@ -13,13 +13,22 @@ namespace ProyectoPropietaria
 {
     public partial class Contabilidad : Form
     {
-        private User user;
+        public static User user;
 
         public Contabilidad(User user)
         {
             InitializeComponent();
-            this.user = user;
+            Contabilidad.user = user;
             lblName.Text = user.name;
+            managePermission();
+        }
+
+        private void managePermission()
+        {
+            if (user.permission == 3)
+            {
+                configSTMI.Visible = false;
+            }
         }
 
         private void parametrosToolStripMenuItem_Click(object sender, EventArgs e)
@@ -88,27 +97,29 @@ namespace ProyectoPropietaria
         private void btnAccountTypes_Click(object sender, EventArgs e)
         {
             MnjTipoCuenta mnjTipoCuenta = MnjTipoCuenta.getInstance();
-            mnjTipoCuenta.Show();
+            mnjTipoCuenta.ShowDialog(this);
             mnjTipoCuenta.Focus();
         }
 
         private void btnCurrenciesTypes_Click(object sender, EventArgs e)
         {
             MnjTipoMoneda mnjTipoMoneda = MnjTipoMoneda.getInstance();
-            mnjTipoMoneda.Show();
+            mnjTipoMoneda.ShowDialog(this);
             mnjTipoMoneda.Focus();
         }
 
         private void btnPlacements_Click(object sender, EventArgs e)
         {
-
+            MnjEntradaContable mnjEntradaContable = MnjEntradaContable.getInstance();
+            mnjEntradaContable.ShowDialog(this);
+            mnjEntradaContable.Focus();
         }
 
         private void btnCountablesAccounts_Click(object sender, EventArgs e)
         {
-            MnjCuentaContable instance = MnjCuentaContable.getInstance();
-            instance.Show();
-            instance.Focus();
+            MnjCuentaContable mnjCuentaContable = MnjCuentaContable.getInstance();
+            mnjCuentaContable.ShowDialog(this);
+            mnjCuentaContable.Focus();
         }
     }
 }

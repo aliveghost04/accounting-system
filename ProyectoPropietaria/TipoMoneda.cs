@@ -52,28 +52,36 @@ namespace ProyectoPropietaria
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            bool saved = false;
             if (currencyType == null)
             {
-                currencyType = new currencies_types {
+                Decimal exchangeRate = 0;
+                Decimal.TryParse(txtExchangeRate.Text, out exchangeRate);
+                currencies_types newCurrencyType = new currencies_types {
                     description = txtDescription.Text,
-                    exchange_rate = Decimal.Parse(txtExchangeRate.Text),
+                    exchange_rate = exchangeRate,
                     state = rbActive.Checked
                 };
-                MnjTipoMoneda.getInstance().saveCurrencyType(currencyType);
+                saved = MnjTipoMoneda.getInstance().saveCurrencyType(newCurrencyType, true);
             } else {
+                Decimal exchangeRate = 0;
+                Decimal.TryParse(txtExchangeRate.Text, out exchangeRate);
                 currencyType.description = txtDescription.Text;
-                currencyType.exchange_rate = Decimal.Parse(txtExchangeRate.Text);
+                currencyType.exchange_rate = exchangeRate;
                 currencyType.state = rbActive.Checked;
-                MnjTipoMoneda.getInstance().saveCurrencyType(null);
+                saved = MnjTipoMoneda.getInstance().saveCurrencyType(currencyType, false);
             }
 
-            MessageBox.Show(
-                "Datos almacenados con éxito",
-                "Información",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
-            this.Close();
+            if (saved)
+            {
+                MessageBox.Show(
+                    "Datos almacenados con éxito",
+                    "Información",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+                this.Close();
+            }
         }
 
         private void TipoMoneda_FormClosed(object sender, FormClosedEventArgs e)

@@ -18,6 +18,7 @@ namespace ProyectoPropietaria
         public countables_accounts()
         {
             this.countables_accounts1 = new HashSet<countables_accounts>();
+            this.placements_movements = new HashSet<placements_movements>();
             this.wholesale = new HashSet<wholesale>();
         }
     
@@ -34,6 +35,8 @@ namespace ProyectoPropietaria
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<countables_accounts> countables_accounts1 { get; set; }
         public virtual countables_accounts countables_accounts2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<placements_movements> placements_movements { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<wholesale> wholesale { get; set; }
     }

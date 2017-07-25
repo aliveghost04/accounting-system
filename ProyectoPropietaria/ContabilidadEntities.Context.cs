@@ -28,8 +28,10 @@ namespace ProyectoPropietaria
         public virtual DbSet<account_types> account_types { get; set; }
         public virtual DbSet<countables_accounts> countables_accounts { get; set; }
         public virtual DbSet<currencies_types> currencies_types { get; set; }
+        public virtual DbSet<logs> logs { get; set; }
         public virtual DbSet<parameters> parameters { get; set; }
         public virtual DbSet<placements> placements { get; set; }
+        public virtual DbSet<placements_movements> placements_movements { get; set; }
         public virtual DbSet<users> users { get; set; }
         public virtual DbSet<wholesale> wholesale { get; set; }
     }

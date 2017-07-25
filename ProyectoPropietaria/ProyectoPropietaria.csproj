@@ -55,10 +55,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="account_types.cs">
-      <DependentUpon>EDMContabilidad.tt</DependentUpon>
+      <DependentUpon>ContabilidadEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ContabilidadEntities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContabilidadEntities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ContabilidadEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContabilidadEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ContabilidadEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContabilidadEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="countables_accounts.cs">
-      <DependentUpon>EDMContabilidad.tt</DependentUpon>
+      <DependentUpon>ContabilidadEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="CuentaContable.cs">
       <SubType>Form</SubType>
@@ -67,22 +82,7 @@
       <DependentUpon>CuentaContable.cs</DependentUpon>
     </Compile>
     <Compile Include="currencies_types.cs">
-      <DependentUpon>EDMContabilidad.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EDMContabilidad.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EDMContabilidad.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EDMContabilidad.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EDMContabilidad.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EDMContabilidad.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EDMContabilidad.edmx</DependentUpon>
+      <DependentUpon>ContabilidadEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EntradaContable.cs">
       <SubType>Form</SubType>
@@ -95,6 +95,9 @@
     </Compile>
     <Compile Include="IniciarSesion.Designer.cs">
       <DependentUpon>IniciarSesion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="logs.cs">
+      <DependentUpon>ContabilidadEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="MnjCuentaContable.cs">
       <SubType>Form</SubType>
@@ -122,10 +125,13 @@
     </Compile>
     <Compile Include="Models\User.cs" />
     <Compile Include="parameters.cs">
-      <DependentUpon>EDMContabilidad.tt</DependentUpon>
+      <DependentUpon>ContabilidadEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="placements.cs">
-      <DependentUpon>EDMContabilidad.tt</DependentUpon>
+      <DependentUpon>ContabilidadEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="placements_movements.cs">
+      <DependentUpon>ContabilidadEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Principal.cs">
       <SubType>Form</SubType>
@@ -154,10 +160,10 @@
       <DependentUpon>TipoMoneda.cs</DependentUpon>
     </Compile>
     <Compile Include="users.cs">
-      <DependentUpon>EDMContabilidad.tt</DependentUpon>
+      <DependentUpon>ContabilidadEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="wholesale.cs">
-      <DependentUpon>EDMContabilidad.tt</DependentUpon>
+      <DependentUpon>ContabilidadEntities.tt</DependentUpon>
     </Compile>
     <EmbeddedResource Include="CuentaContable.resx">
       <DependentUpon>CuentaContable.cs</DependentUpon>
@@ -201,12 +207,12 @@
     <EmbeddedResource Include="TipoMoneda.resx">
       <DependentUpon>TipoMoneda.cs</DependentUpon>
     </EmbeddedResource>
-    <EntityDeploy Include="EDMContabilidad.edmx">
+    <EntityDeploy Include="ContabilidadEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>EDMContabilidad.Designer.cs</LastGenOutput>
+      <LastGenOutput>ContabilidadEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="EDMContabilidad.edmx.diagram">
-      <DependentUpon>EDMContabilidad.edmx</DependentUpon>
+    <None Include="ContabilidadEntities.edmx.diagram">
+      <DependentUpon>ContabilidadEntities.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -228,15 +234,15 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EDMContabilidad.Context.tt">
+    <Content Include="ContabilidadEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>EDMContabilidad.edmx</DependentUpon>
-      <LastGenOutput>EDMContabilidad.Context.cs</LastGenOutput>
+      <DependentUpon>ContabilidadEntities.edmx</DependentUpon>
+      <LastGenOutput>ContabilidadEntities.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="EDMContabilidad.tt">
+    <Content Include="ContabilidadEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>EDMContabilidad.edmx</DependentUpon>
-      <LastGenOutput>EDMContabilidad.cs</LastGenOutput>
+      <DependentUpon>ContabilidadEntities.edmx</DependentUpon>
+      <LastGenOutput>ContabilidadEntities.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

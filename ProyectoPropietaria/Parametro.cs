@@ -36,5 +36,16 @@ namespace ProyectoPropietaria
         {
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(
+                "¡Datos almacenados con éxito!",
+                "Información",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
+            this.Close();
+        }
     }
 }

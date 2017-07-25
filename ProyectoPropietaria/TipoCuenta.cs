@@ -23,30 +23,34 @@ namespace ProyectoPropietaria
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            bool saved = false;
             if (accountType == null)
             {
-                accountType = new account_types
+                account_types newAccountType = new account_types
                 {
                     description = txtDescription.Text,
                     type = cbType.Text,
                     state = rbActive.Checked
                 };
-                MnjTipoCuenta.getInstance().saveAccountType(accountType);
+                saved = MnjTipoCuenta.getInstance().saveAccountType(newAccountType, true);
             }
             else {
                 accountType.description = txtDescription.Text;
                 accountType.type = cbType.Text;
                 accountType.state = rbActive.Checked;
-                MnjTipoCuenta.getInstance().saveAccountType(null);
+                saved = MnjTipoCuenta.getInstance().saveAccountType(accountType, false);
             }
 
-            MessageBox.Show(
-                "Datos almacenados con éxito",
-                "Información",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
-            this.Close();
+            if (saved)
+            {
+                MessageBox.Show(
+                    "Datos almacenados con éxito",
+                    "Información",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+                this.Close();
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -97,5 +101,6 @@ namespace ProyectoPropietaria
         {
             instance = null;
         }
+        
     }
 }

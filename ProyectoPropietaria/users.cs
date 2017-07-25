@@ -14,6 +14,12 @@ namespace ProyectoPropietaria
     
     public partial class users
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public users()
+        {
+            this.logs = new HashSet<logs>();
+        }
+    
         public int id { get; set; }
         public string name { get; set; }
         public string username { get; set; }
@@ -21,5 +27,8 @@ namespace ProyectoPropietaria
         public System.DateTime created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
         public int permission { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<logs> logs { get; set; }
     }
 }

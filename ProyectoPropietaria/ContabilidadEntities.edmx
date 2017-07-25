@@ -36,6 +36,17 @@
           <Property Name="exchange_rate" Type="decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="state" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="logs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="data" Type="text" />
+          <Property Name="action" Type="int" Nullable="false" />
+          <Property Name="success" Type="bit" Nullable="false" />
+          <Property Name="date" Type="datetime" Nullable="false" />
+          <Property Name="user" Type="int" />
+        </EntityType>
         <EntityType Name="parameters">
           <Key>
             <PropertyRef Name="id" />
@@ -53,12 +64,21 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="description" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="identifier" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="allow_transaction" Type="bit" Nullable="false" />
-          <Property Name="movement_type" Type="char" MaxLength="2" Nullable="false" />
-          <Property Name="date" Type="int" />
-          <Property Name="amount" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="auxiliary_id" Type="int" Nullable="false" />
+          <Property Name="date" Type="datetime" Nullable="false" />
+          <Property Name="currency_type" Type="int" Nullable="false" />
+          <Property Name="exchange_rate" Type="decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="state" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="placements_movements">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="account" Type="int" Nullable="false" />
+          <Property Name="movement_type" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="amount" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="placement_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="users">
           <Key>
@@ -107,7 +127,55 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__wholesale__major__1BFD2C07">
+        <Association Name="FK__logs__user__267ABA7A">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="logs" Type="Self.logs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="logs">
+              <PropertyRef Name="user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__placement__accou__1CF15040">
+          <End Role="countables_accounts" Type="Self.countables_accounts" Multiplicity="1" />
+          <End Role="placements_movements" Type="Self.placements_movements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="countables_accounts">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="placements_movements">
+              <PropertyRef Name="account" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__placement__curre__1A14E395">
+          <End Role="currencies_types" Type="Self.currencies_types" Multiplicity="1" />
+          <End Role="placements" Type="Self.placements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="currencies_types">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="placements">
+              <PropertyRef Name="currency_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__placement__place__1DE57479">
+          <End Role="placements" Type="Self.placements" Multiplicity="1" />
+          <End Role="placements_movements" Type="Self.placements_movements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="placements">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="placements_movements">
+              <PropertyRef Name="placement_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__wholesale__major__20C1E124">
           <End Role="countables_accounts" Type="Self.countables_accounts" Multiplicity="1" />
           <End Role="wholesale" Type="Self.wholesale" Multiplicity="*" />
           <ReferentialConstraint>
@@ -123,8 +191,10 @@
           <EntitySet Name="account_types" EntityType="Self.account_types" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="countables_accounts" EntityType="Self.countables_accounts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="currencies_types" EntityType="Self.currencies_types" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="logs" EntityType="Self.logs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="parameters" EntityType="Self.parameters" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="placements" EntityType="Self.placements" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="placements_movements" EntityType="Self.placements_movements" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="wholesale" EntityType="Self.wholesale" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__countable__accou__145C0A3F" Association="Self.FK__countable__accou__145C0A3F">
@@ -135,7 +205,23 @@
             <End Role="countables_accounts" EntitySet="countables_accounts" />
             <End Role="countables_accounts1" EntitySet="countables_accounts" />
           </AssociationSet>
-          <AssociationSet Name="FK__wholesale__major__1BFD2C07" Association="Self.FK__wholesale__major__1BFD2C07">
+          <AssociationSet Name="FK__logs__user__267ABA7A" Association="Self.FK__logs__user__267ABA7A">
+            <End Role="users" EntitySet="users" />
+            <End Role="logs" EntitySet="logs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__placement__accou__1CF15040" Association="Self.FK__placement__accou__1CF15040">
+            <End Role="countables_accounts" EntitySet="countables_accounts" />
+            <End Role="placements_movements" EntitySet="placements_movements" />
+          </AssociationSet>
+          <AssociationSet Name="FK__placement__curre__1A14E395" Association="Self.FK__placement__curre__1A14E395">
+            <End Role="currencies_types" EntitySet="currencies_types" />
+            <End Role="placements" EntitySet="placements" />
+          </AssociationSet>
+          <AssociationSet Name="FK__placement__place__1DE57479" Association="Self.FK__placement__place__1DE57479">
+            <End Role="placements" EntitySet="placements" />
+            <End Role="placements_movements" EntitySet="placements_movements" />
+          </AssociationSet>
+          <AssociationSet Name="FK__wholesale__major__20C1E124" Association="Self.FK__wholesale__major__20C1E124">
             <End Role="countables_accounts" EntitySet="countables_accounts" />
             <End Role="wholesale" EntitySet="wholesale" />
           </AssociationSet>
@@ -170,7 +256,8 @@
           <NavigationProperty Name="account_types" Relationship="Self.FK__countable__accou__145C0A3F" FromRole="countables_accounts" ToRole="account_types" />
           <NavigationProperty Name="countables_accounts1" Relationship="Self.FK__countable__accou__15502E78" FromRole="countables_accounts" ToRole="countables_accounts1" />
           <NavigationProperty Name="countables_accounts2" Relationship="Self.FK__countable__accou__15502E78" FromRole="countables_accounts1" ToRole="countables_accounts" />
-          <NavigationProperty Name="wholesale" Relationship="Self.FK__wholesale__major__1BFD2C07" FromRole="countables_accounts" ToRole="wholesale" />
+          <NavigationProperty Name="placements_movements" Relationship="Self.FK__placement__accou__1CF15040" FromRole="countables_accounts" ToRole="placements_movements" />
+          <NavigationProperty Name="wholesale" Relationship="Self.FK__wholesale__major__20C1E124" FromRole="countables_accounts" ToRole="wholesale" />
         </EntityType>
         <EntityType Name="currencies_types">
           <Key>
@@ -180,6 +267,19 @@
           <Property Name="description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="exchange_rate" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="state" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="placements" Relationship="Self.FK__placement__curre__1A14E395" FromRole="currencies_types" ToRole="placements" />
+        </EntityType>
+        <EntityType Name="logs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="data" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="action" Type="Int32" Nullable="false" />
+          <Property Name="success" Type="Boolean" Nullable="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="user" Type="Int32" />
+          <NavigationProperty Name="users" Relationship="Self.FK__logs__user__267ABA7A" FromRole="logs" ToRole="users" />
         </EntityType>
         <EntityType Name="parameters">
           <Key>
@@ -198,12 +298,25 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="identifier" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="allow_transaction" Type="Boolean" Nullable="false" />
-          <Property Name="movement_type" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="date" Type="Int32" />
-          <Property Name="amount" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="auxiliary_id" Type="Int32" Nullable="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="currency_type" Type="Int32" Nullable="false" />
+          <Property Name="exchange_rate" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="state" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="currencies_types" Relationship="Self.FK__placement__curre__1A14E395" FromRole="placements" ToRole="currencies_types" />
+          <NavigationProperty Name="placements_movements" Relationship="Self.FK__placement__place__1DE57479" FromRole="placements" ToRole="placements_movements" />
+        </EntityType>
+        <EntityType Name="placements_movements">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="account" Type="Int32" Nullable="false" />
+          <Property Name="movement_type" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="amount" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="placement_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="countables_accounts" Relationship="Self.FK__placement__accou__1CF15040" FromRole="placements_movements" ToRole="countables_accounts" />
+          <NavigationProperty Name="placements" Relationship="Self.FK__placement__place__1DE57479" FromRole="placements_movements" ToRole="placements" />
         </EntityType>
         <EntityType Name="users">
           <Key>
@@ -216,6 +329,7 @@
           <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="updated_at" Type="DateTime" Precision="3" />
           <Property Name="permission" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="logs" Relationship="Self.FK__logs__user__267ABA7A" FromRole="users" ToRole="logs" />
         </EntityType>
         <EntityType Name="wholesale">
           <Key>
@@ -227,7 +341,7 @@
           <Property Name="process_date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="balance" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="state" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="countables_accounts" Relationship="Self.FK__wholesale__major__1BFD2C07" FromRole="wholesale" ToRole="countables_accounts" />
+          <NavigationProperty Name="countables_accounts" Relationship="Self.FK__wholesale__major__20C1E124" FromRole="wholesale" ToRole="countables_accounts" />
         </EntityType>
         <Association Name="FK__countable__accou__145C0A3F">
           <End Role="account_types" Type="Self.account_types" Multiplicity="1" />
@@ -253,7 +367,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__wholesale__major__1BFD2C07">
+        <Association Name="FK__placement__accou__1CF15040">
+          <End Role="countables_accounts" Type="Self.countables_accounts" Multiplicity="1" />
+          <End Role="placements_movements" Type="Self.placements_movements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="countables_accounts">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="placements_movements">
+              <PropertyRef Name="account" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__wholesale__major__20C1E124">
           <End Role="countables_accounts" Type="Self.countables_accounts" Multiplicity="1" />
           <End Role="wholesale" Type="Self.wholesale" Multiplicity="*" />
           <ReferentialConstraint>
@@ -265,12 +391,50 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__placement__curre__1A14E395">
+          <End Role="currencies_types" Type="Self.currencies_types" Multiplicity="1" />
+          <End Role="placements" Type="Self.placements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="currencies_types">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="placements">
+              <PropertyRef Name="currency_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__logs__user__267ABA7A">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="logs" Type="Self.logs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="logs">
+              <PropertyRef Name="user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__placement__place__1DE57479">
+          <End Role="placements" Type="Self.placements" Multiplicity="1" />
+          <End Role="placements_movements" Type="Self.placements_movements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="placements">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="placements_movements">
+              <PropertyRef Name="placement_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ContabilidadEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="account_types" EntityType="Self.account_types" />
           <EntitySet Name="countables_accounts" EntityType="Self.countables_accounts" />
           <EntitySet Name="currencies_types" EntityType="Self.currencies_types" />
+          <EntitySet Name="logs" EntityType="Self.logs" />
           <EntitySet Name="parameters" EntityType="Self.parameters" />
           <EntitySet Name="placements" EntityType="Self.placements" />
+          <EntitySet Name="placements_movements" EntityType="Self.placements_movements" />
           <EntitySet Name="users" EntityType="Self.users" />
           <EntitySet Name="wholesale" EntityType="Self.wholesale" />
           <AssociationSet Name="FK__countable__accou__145C0A3F" Association="Self.FK__countable__accou__145C0A3F">
@@ -281,9 +445,25 @@
             <End Role="countables_accounts" EntitySet="countables_accounts" />
             <End Role="countables_accounts1" EntitySet="countables_accounts" />
           </AssociationSet>
-          <AssociationSet Name="FK__wholesale__major__1BFD2C07" Association="Self.FK__wholesale__major__1BFD2C07">
+          <AssociationSet Name="FK__placement__accou__1CF15040" Association="Self.FK__placement__accou__1CF15040">
+            <End Role="countables_accounts" EntitySet="countables_accounts" />
+            <End Role="placements_movements" EntitySet="placements_movements" />
+          </AssociationSet>
+          <AssociationSet Name="FK__wholesale__major__20C1E124" Association="Self.FK__wholesale__major__20C1E124">
             <End Role="countables_accounts" EntitySet="countables_accounts" />
             <End Role="wholesale" EntitySet="wholesale" />
+          </AssociationSet>
+          <AssociationSet Name="FK__placement__curre__1A14E395" Association="Self.FK__placement__curre__1A14E395">
+            <End Role="currencies_types" EntitySet="currencies_types" />
+            <End Role="placements" EntitySet="placements" />
+          </AssociationSet>
+          <AssociationSet Name="FK__logs__user__267ABA7A" Association="Self.FK__logs__user__267ABA7A">
+            <End Role="users" EntitySet="users" />
+            <End Role="logs" EntitySet="logs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__placement__place__1DE57479" Association="Self.FK__placement__place__1DE57479">
+            <End Role="placements" EntitySet="placements" />
+            <End Role="placements_movements" EntitySet="placements_movements" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -326,6 +506,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="logs">
+            <EntityTypeMapping TypeName="ContabilidadModel.logs">
+              <MappingFragment StoreEntitySet="logs">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="data" ColumnName="data" />
+                <ScalarProperty Name="action" ColumnName="action" />
+                <ScalarProperty Name="success" ColumnName="success" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="user" ColumnName="user" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="parameters">
             <EntityTypeMapping TypeName="ContabilidadModel.parameters">
               <MappingFragment StoreEntitySet="parameters">
@@ -343,12 +535,22 @@
               <MappingFragment StoreEntitySet="placements">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="description" ColumnName="description" />
-                <ScalarProperty Name="identifier" ColumnName="identifier" />
-                <ScalarProperty Name="allow_transaction" ColumnName="allow_transaction" />
-                <ScalarProperty Name="movement_type" ColumnName="movement_type" />
+                <ScalarProperty Name="auxiliary_id" ColumnName="auxiliary_id" />
                 <ScalarProperty Name="date" ColumnName="date" />
-                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="currency_type" ColumnName="currency_type" />
+                <ScalarProperty Name="exchange_rate" ColumnName="exchange_rate" />
                 <ScalarProperty Name="state" ColumnName="state" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="placements_movements">
+            <EntityTypeMapping TypeName="ContabilidadModel.placements_movements">
+              <MappingFragment StoreEntitySet="placements_movements">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="account" ColumnName="account" />
+                <ScalarProperty Name="movement_type" ColumnName="movement_type" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="placement_id" ColumnName="placement_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

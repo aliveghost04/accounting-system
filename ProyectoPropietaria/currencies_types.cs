@@ -14,9 +14,18 @@ namespace ProyectoPropietaria
     
     public partial class currencies_types
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public currencies_types()
+        {
+            this.placements = new HashSet<placements>();
+        }
+    
         public int id { get; set; }
         public string description { get; set; }
         public decimal exchange_rate { get; set; }
         public bool state { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<placements> placements { get; set; }
     }
 }

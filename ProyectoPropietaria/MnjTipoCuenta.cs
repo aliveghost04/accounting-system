@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProyectoPropietaria.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,12 +19,32 @@ namespace ProyectoPropietaria
         private MnjTipoCuenta()
         {
             InitializeComponent();
-            loadAccountTypes();
+            loadAccountTypes("");
+            managePermission();
         }
 
-        private void loadAccountTypes() {
+        private void managePermission()
+        {
+            User user = Contabilidad.user;
+
+            if (user.permission == 3)
+            {
+                btnDelete.Visible = false;
+                btnModify.Visible = false;
+                btnAdd.Visible = false;
+            }
+        }
+
+        private void loadAccountTypes(String filter) {
+            int id = 0;
+
+            Int32.TryParse(filter, out id);
+
             dgvAccountTypes.DataSource = (from account_types in entities.account_types
-                                         select new {
+                                          where account_types.id == id ||
+                                          account_types.description.Contains(filter) ||
+                                          account_types.type.Contains(filter)
+                                          select new {
                                              account_types.id,
                                              account_types.description,
                                              account_types.type,
@@ -47,14 +68,30 @@ namespace ProyectoPropietaria
             TipoCuenta.getInstance().Show();
         }
 
-        public void saveAccountType(account_types accountType) {
-            if (accountType != null)
+        public bool saveAccountType(account_types accountType, bool isNew) {
+            // Validation
+            string errors = validate(accountType);
+
+            if (errors.Length > 0)
+            {
+                MessageBox.Show(
+                    errors,
+                    "Error de validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                 );
+
+                return false;
+            }
+
+            if (isNew)
             {
                 entities.account_types.Add(accountType);
             }
             
             entities.SaveChanges();
-            loadAccountTypes();
+            loadAccountTypes("");
+            return true;
         }
 
         public static MnjTipoCuenta getInstance() {
@@ -156,19 +193,64 @@ namespace ProyectoPropietaria
                     if (deleteIt == DialogResult.Yes)
                     {
                         entities.account_types.Remove(accountType);
-                        entities.SaveChanges();
+                        try
+                        {
+                            entities.SaveChanges();
 
-                        MessageBox.Show(
-                            "Tipo de Cuenta eliminada con éxito",
-                            "Información",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information
-                        );
-                        loadAccountTypes();
+                            MessageBox.Show(
+                                "Tipo de Cuenta eliminada con éxito",
+                                "Información",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information
+                            );
+                            loadAccountTypes("");
+                        } catch (Exception ex) {
+                            MessageBox.Show(
+                                "¡Este Tipo de Cuenta se encuentra en uso!",
+                                "Error",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error
+                            );
+
+                            entities.Dispose();
+                            entities = new ContabilidadEntities();
+                        }
                     }
                 }
             }
 
+        }
+
+        private void txtSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) {
+                btnSearch.PerformClick();
+            }
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            loadAccountTypes(txtSearch.Text);
+        }
+
+        private String validate(account_types accountType)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var prop in accountType.GetType().GetProperties())
+            {
+                if (prop.PropertyType == typeof(string))
+                {
+                    prop.SetValue(accountType, ((string)prop.GetValue(accountType)).Trim());
+                }
+            }
+
+            if (accountType.description.Length == 0)
+            {
+                sb.Append("- El campo descripción es obligatorio\n");
+            }
+
+            return sb.ToString();
         }
     }
 }

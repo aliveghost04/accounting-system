@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProyectoPropietaria.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,11 +19,37 @@ namespace ProyectoPropietaria
         private MnjTipoMoneda()
         {
             InitializeComponent();
-            loadCurrenciesTypes();
+            loadCurrenciesTypes("");
+            managePermission();
         }
 
-        private void loadCurrenciesTypes() {
-            dgvCurrenciesTypes.DataSource = entities.currencies_types.ToList();
+        private void managePermission()
+        {
+            User user = Contabilidad.user;
+
+            if (user.permission == 3)
+            {
+                btnDelete.Visible = false;
+                btnModify.Visible = false;
+                btnAdd.Visible = false;
+            }
+        }
+
+        private void loadCurrenciesTypes(String filter) {
+            int id = 0;
+
+            Int32.TryParse(filter, out id);
+
+            dgvCurrenciesTypes.DataSource = 
+                (from em in entities.currencies_types
+                 where em.id == id ||
+                 em.description.Contains(filter)
+                 select new {
+                    em.id,
+                    em.description,
+                    em.exchange_rate,
+                    em.state
+                }).ToList();
 
             dgvCurrenciesTypes.Columns[0].HeaderText = "ID";
             dgvCurrenciesTypes.Columns[1].HeaderText = "Descripción";
@@ -43,13 +70,31 @@ namespace ProyectoPropietaria
             return instance;
         }
 
-        public void saveCurrencyType(currencies_types currencyType) {
-            if (currencyType != null) {
-                entities.currencies_types.Add(currencyType);
+        public bool saveCurrencyType(currencies_types currencyType, bool isNew) {
+            // Validating
+            string errors = validate(currencyType);
+
+            if (errors.Length > 0)
+            {
+                MessageBox.Show(
+                    errors,
+                    "Error de validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                return false;
             }
 
+            // End validtion
+
+            if (isNew)
+            {
+                entities.currencies_types.Add(currencyType);
+            }
+            
             entities.SaveChanges();
-            loadCurrenciesTypes();
+            loadCurrenciesTypes("");
+            return true;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -95,7 +140,7 @@ namespace ProyectoPropietaria
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error
                     );
-                    loadCurrenciesTypes();
+                    loadCurrenciesTypes("");
                 } else
                 {
                     TipoMoneda tipoMoneda = TipoMoneda.getInstance();
@@ -144,7 +189,7 @@ namespace ProyectoPropietaria
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error
                     );
-                    loadCurrenciesTypes();
+                    loadCurrenciesTypes("");
                 }
                 else
                 {
@@ -158,17 +203,67 @@ namespace ProyectoPropietaria
                     if (deleteIt == DialogResult.Yes)
                     {
                         entities.currencies_types.Remove(currencyType);
-                        entities.SaveChanges();
+                        try
+                        {
+                            entities.SaveChanges();
 
-                        MessageBox.Show(
-                            "Tipo de Moneda eliminada con éxito",
-                            "Información",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information
-                        );
+                            MessageBox.Show(
+                                "¡Tipo de Moneda eliminada con éxito!",
+                                "Información",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information
+                            );
+                        }
+                        catch (Exception ex) {
+                            MessageBox.Show(
+                                "¡Este tipo de moneda se encuentra en uso!",
+                                "Error",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error
+                            );
+                            entities.Dispose();
+                            entities = new ContabilidadEntities();
+                        }
                     }
+                    loadCurrenciesTypes("");
                 }
             }
+        }
+
+        private void txtSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnSearch.PerformClick();
+            }
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            loadCurrenciesTypes(txtSearch.Text);
+        }
+
+        private string validate(currencies_types currency) {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var prop in currency.GetType().GetProperties())
+            {
+                if (prop.PropertyType == typeof(string))
+                {
+                    prop.SetValue(currency, ((string)prop.GetValue(currency)).Trim());
+                }
+            }
+
+            if (currency.description.Length == 0) {
+                sb.Append("- El campo descripción es obligatorio\n");
+            }
+
+            if (currency.exchange_rate <= 0)
+            {
+                sb.Append("- El campo tasa de cambio es obligatorio y debe ser mayor que 0\n");
+            }
+
+            return sb.ToString();
         }
     }
 }

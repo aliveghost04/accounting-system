@@ -23,13 +23,28 @@ namespace ProyectoPropietaria
         }
 
         private void initialize() {
+            List<int> levels = new List<int>();
+            levels.Add(1);
+
+            List<countables_accounts> accounts = entities.countables_accounts.ToList();
+
             cbType.DataSource = (from em in entities.account_types
                                  where em.state == true
                                  select em).ToList();
 
             cbType.DisplayMember = "description";
 
-            cbLevel.DataSource = new[] { 1, 2, 3};
+            if (accounts.Where(el => el.level == 1).Count() > 0)
+            {
+                levels.Add(2);
+            }
+
+            if (accounts.Where(el => el.level == 2).Count() > 0)
+            {
+                levels.Add(3);
+            }
+
+            cbLevel.DataSource = levels;
         }
 
         private void loadMayorAccount(int level) {
@@ -39,9 +54,18 @@ namespace ProyectoPropietaria
                 cbMajorAccount.Enabled = false;
                 cbMajorAccount.DataSource = new int[0];
             } else {
-                cbMajorAccount.DataSource = (from em in entities.countables_accounts
-                                             where (em.state == true && em.level == level)
-                                             select em).ToList();
+                List<countables_accounts> accounts = 
+                    (from em in entities.countables_accounts
+                    where (em.state == true && em.level == level)
+                    select em).ToList();
+
+                if (countableAccount == null) {
+                    cbMajorAccount.DataSource = accounts;
+                } else
+                {
+                    cbMajorAccount.DataSource = accounts.Where(el => el.id != countableAccount.id).ToList();
+                }
+                
                 cbMajorAccount.DisplayMember = "description";
                 cbMajorAccount.Enabled = true;
             }
@@ -112,9 +136,11 @@ namespace ProyectoPropietaria
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            bool saved = false;
+
             if (countableAccount == null)
             {
-                countableAccount = new countables_accounts
+                countables_accounts newCountableAccount = new countables_accounts
                 {
                     description = txtDescription.Text,
                     account_type = ((account_types)cbType.SelectedItem).id,
@@ -123,14 +149,13 @@ namespace ProyectoPropietaria
                     balance = 0,
                     state = rbActive.Checked
                 };
-
-                if (countableAccount.level != 1)
+                
+                if (newCountableAccount.level != 1)
                 {
-                    countableAccount.account_major = ((countables_accounts)cbMajorAccount.SelectedItem).id;
+                    newCountableAccount.account_major = ((countables_accounts)cbMajorAccount.SelectedItem).id;
                 }
 
-                MnjCuentaContable.getInstance().saveAccountCountable(countableAccount);
-                this.Close();
+                saved = MnjCuentaContable.getInstance().saveAccountCountable(newCountableAccount, true);
             }
             else {
                 countableAccount.description = txtDescription.Text;
@@ -144,10 +169,14 @@ namespace ProyectoPropietaria
                     countableAccount.account_major = ((countables_accounts)cbMajorAccount.SelectedItem).id;
                 }
 
-                MnjCuentaContable.getInstance().saveAccountCountable(null);
+                saved = MnjCuentaContable.getInstance().saveAccountCountable(countableAccount, false);
+
             }
 
-            this.Close();
+            if (saved)
+            {
+                this.Close();
+            }
         }
 
         private void cbLevel_SelectedIndexChanged(object sender, EventArgs e)
