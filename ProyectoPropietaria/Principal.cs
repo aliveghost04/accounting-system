@@ -14,13 +14,27 @@ namespace ProyectoPropietaria
     public partial class Contabilidad : Form
     {
         public static User user;
+        public static bool showLogin = false;
+        private static Contabilidad instance;
 
-        public Contabilidad(User user)
+        private Contabilidad()
         {
             InitializeComponent();
+        }
+
+        public void setUser(User user) {
             Contabilidad.user = user;
             lblName.Text = user.name;
             managePermission();
+        }
+
+        public static Contabilidad getInstance() {
+            if (instance == null)
+            {
+                instance = new Contabilidad();
+            }
+
+            return instance;
         }
 
         private void managePermission()
@@ -69,12 +83,13 @@ namespace ProyectoPropietaria
         private void salirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IniciarSesion.getInstance().Show();
-            this.Dispose();
+            showLogin = true;
+            this.Close();
         }
 
         private void Contabilidad_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (e.CloseReason == CloseReason.UserClosing)
+            if (e.CloseReason == CloseReason.UserClosing && !showLogin)
             {
                 DialogResult closeIt = MessageBox.Show(
                     "¿Está seguro que desea salir?",
@@ -91,6 +106,10 @@ namespace ProyectoPropietaria
                 {
                     e.Cancel = true;
                 }
+            }
+            else {
+                instance = null;
+                showLogin = false;
             }
         }
 
@@ -120,6 +139,16 @@ namespace ProyectoPropietaria
             MnjCuentaContable mnjCuentaContable = MnjCuentaContable.getInstance();
             mnjCuentaContable.ShowDialog(this);
             mnjCuentaContable.Focus();
+        }
+
+        private void reportesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new Reporte().ShowDialog(this);
+        }
+
+        private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new MnjUsers().ShowDialog(this);
         }
     }
 }

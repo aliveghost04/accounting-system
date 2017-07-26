@@ -28,24 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtRnc = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
+            this.dtCloseMonth = new System.Windows.Forms.DateTimePicker();
+            this.dtMonth = new System.Windows.Forms.DateTimePicker();
+            this.dtYear = new System.Windows.Forms.DateTimePicker();
             this.label5 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // textBox1
+            // txtRnc
             // 
-            this.textBox1.Location = new System.Drawing.Point(121, 57);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 0;
+            this.txtRnc.Location = new System.Drawing.Point(121, 57);
+            this.txtRnc.Name = "txtRnc";
+            this.txtRnc.Size = new System.Drawing.Size(100, 20);
+            this.txtRnc.TabIndex = 0;
             // 
             // label1
             // 
@@ -86,26 +86,33 @@
             this.label4.Text = "Año";
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
-            // dateTimePicker1
+            // dtCloseMonth
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(121, 89);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(100, 20);
-            this.dateTimePicker1.TabIndex = 5;
+            this.dtCloseMonth.CustomFormat = "MM";
+            this.dtCloseMonth.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtCloseMonth.Location = new System.Drawing.Point(121, 89);
+            this.dtCloseMonth.Name = "dtCloseMonth";
+            this.dtCloseMonth.Size = new System.Drawing.Size(100, 20);
+            this.dtCloseMonth.TabIndex = 5;
             // 
-            // dateTimePicker2
+            // dtMonth
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(121, 118);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(100, 20);
-            this.dateTimePicker2.TabIndex = 6;
+            this.dtMonth.CustomFormat = "MM";
+            this.dtMonth.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtMonth.Location = new System.Drawing.Point(121, 118);
+            this.dtMonth.Name = "dtMonth";
+            this.dtMonth.Size = new System.Drawing.Size(100, 20);
+            this.dtMonth.TabIndex = 6;
             // 
-            // dateTimePicker3
+            // dtYear
             // 
-            this.dateTimePicker3.Location = new System.Drawing.Point(121, 146);
-            this.dateTimePicker3.Name = "dateTimePicker3";
-            this.dateTimePicker3.Size = new System.Drawing.Size(100, 20);
-            this.dateTimePicker3.TabIndex = 7;
+            this.dtYear.CustomFormat = "yyyy";
+            this.dtYear.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtYear.Location = new System.Drawing.Point(121, 146);
+            this.dtYear.Name = "dtYear";
+            this.dtYear.ShowUpDown = true;
+            this.dtYear.Size = new System.Drawing.Size(100, 20);
+            this.dtYear.TabIndex = 7;
             // 
             // label5
             // 
@@ -117,31 +124,31 @@
             this.label5.Text = "Parametros";
             this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
-            // button1
+            // btnSave
             // 
-            this.button1.Location = new System.Drawing.Point(103, 211);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Guardar";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnSave.Location = new System.Drawing.Point(103, 211);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 9;
+            this.btnSave.Text = "Guardar";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // Parametro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 262);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.dateTimePicker3);
-            this.Controls.Add(this.dateTimePicker2);
-            this.Controls.Add(this.dateTimePicker1);
+            this.Controls.Add(this.dtYear);
+            this.Controls.Add(this.dtMonth);
+            this.Controls.Add(this.dtCloseMonth);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtRnc);
             this.Name = "Parametro";
             this.Text = "Parametro";
             this.ResumeLayout(false);
@@ -151,15 +158,15 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtRnc;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
-        private System.Windows.Forms.DateTimePicker dateTimePicker3;
+        private System.Windows.Forms.DateTimePicker dtCloseMonth;
+        private System.Windows.Forms.DateTimePicker dtMonth;
+        private System.Windows.Forms.DateTimePicker dtYear;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnSave;
     }
 }

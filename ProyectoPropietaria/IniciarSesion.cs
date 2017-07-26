@@ -48,10 +48,14 @@ namespace ProyectoPropietaria
             if (query.Count() == 1)
             {
                 users user = query.First();
-                new Contabilidad(new User() {
+                Contabilidad instance = Contabilidad.getInstance();
+                instance.setUser(new User
+                {
+                    id = user.id,
                     name = user.name,
                     permission = user.permission
-                }).Show();
+                });
+                instance.Show();
 
                 resetFields();
                 this.Hide();
