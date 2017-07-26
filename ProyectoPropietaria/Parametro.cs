@@ -13,10 +13,21 @@ namespace ProyectoPropietaria
     public partial class Parametro : Form
     {
         ContabilidadEntities entities;
+        parameters parameter = null;
+
         public Parametro()
         {
             InitializeComponent();
             entities = new ContabilidadEntities();
+            parameter = entities.parameters.First();
+            loadParamater();
+        }
+
+        public void loadParamater() {
+            txtRnc.Text = parameter.rnc;
+            dtMonth.Value = new DateTime(2017, parameter.month, 26);
+            dtCloseMonth.Value = new DateTime(2017, parameter.month_close, 26);
+            dtYear.Value = new DateTime(parameter.year, 7, 26);
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -59,16 +70,30 @@ namespace ProyectoPropietaria
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            parameters parameter = new parameters {
-                rnc = txtRnc.Text,
-                year = Int32.Parse(dtYear.Text),
-                month = Int32.Parse(dtMonth.Text),
-                month_close = Int32.Parse(dtCloseMonth.Text),
-                processed = "S"
-            };
-
-            String errors = validate(parameter);
-
+            String errors = "";
+            parameters parameterLocal = null;
+            if (parameter == null)
+            {
+                parameterLocal = new parameters
+                {
+                    rnc = txtRnc.Text,
+                    year = Int32.Parse(dtYear.Text),
+                    month = Int32.Parse(dtMonth.Text),
+                    month_close = Int32.Parse(dtCloseMonth.Text),
+                    processed = "S"
+                };
+                errors = validate(parameterLocal);
+            } else
+            {
+                parameter = entities.parameters.First(el => el.id == parameter.id);
+                parameter.rnc = txtRnc.Text;
+                parameter.year = Int32.Parse(dtYear.Text);
+                parameter.month = Int32.Parse(dtMonth.Text);
+                parameter.month_close = Int32.Parse(dtCloseMonth.Text);
+                parameter.processed = "S";
+                errors = validate(parameter);
+            }
+            
             if (errors.Length > 0)
             {
                 MessageBox.Show(
@@ -80,7 +105,10 @@ namespace ProyectoPropietaria
             }
             else
             {
-                entities.parameters.Add(parameter);
+                if (parameter == null)
+                {
+                    entities.parameters.Add(parameterLocal);
+                }
                 entities.SaveChanges();
 
                 MessageBox.Show(
@@ -89,6 +117,21 @@ namespace ProyectoPropietaria
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information
                 );
+                this.Close();
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult cancelIt = MessageBox.Show(
+                "¿Estás seguro que quieres cancelar\n\nSe perderán los cambios?",
+                "Confirmar",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Question
+            );
+
+            if (cancelIt == DialogResult.Yes)
+            {
                 this.Close();
             }
         }

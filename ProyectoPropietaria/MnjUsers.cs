@@ -12,15 +12,17 @@ namespace ProyectoPropietaria
 {
     public partial class MnjUsers : Form
     {
-        ContabilidadEntities entities;
-        public MnjUsers()
+        private ContabilidadEntities entities;
+        private static MnjUsers instance = null;
+
+        private MnjUsers()
         {
             InitializeComponent();
             entities = new ContabilidadEntities();
             loadUsers("");
         }
 
-        private void loadUsers(String filter) {
+        public void loadUsers(String filter) {
             int id = 0;
             Int32.TryParse(filter, out id);
             dgvUsers.DataSource = (from em in entities.users
@@ -40,6 +42,14 @@ namespace ProyectoPropietaria
             dgvUsers.Columns[3].HeaderText = "Permiso";
 
             dgvUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
+
+        public static MnjUsers getInstance() {
+            if (instance == null) {
+                instance = new MnjUsers();
+            }
+
+            return instance;
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -72,6 +82,17 @@ namespace ProyectoPropietaria
 
             if (row != null)
             {
+                DialogResult deleteIt = MessageBox.Show(
+                    "¿Estas seguro de eliminar este usuario?",
+                    "Confirmar",
+                    MessageBoxButtons.YesNoCancel,
+                    MessageBoxIcon.Question
+                );
+
+                if (deleteIt != DialogResult.Yes) {
+                    return;
+                }
+
                 int id = Int32.Parse(row.Cells[0].Value.ToString());
                 users localUser = (from em in entities.users
                                    where em.id == id
@@ -124,15 +145,74 @@ namespace ProyectoPropietaria
                             entities.users.Remove(localUser);
                             entities.SaveChanges();
 
-                            if (sameAsLogged) {
+                            MessageBox.Show(
+                                "¡Usuario eliminado con éxito!",
+                                "Información",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information
+                            );
+
+                            if (sameAsLogged)
+                            {
                                 IniciarSesion.getInstance().Show();
                                 Contabilidad.showLogin = true;
                                 Contabilidad.getInstance().Close();
+                            }
+                            else {
+                                loadUsers("");
                             }
                         }
                     }
                 }
             }
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            new Usuario().ShowDialog(this);
+        }
+
+        private void MnjUsers_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            instance = null;
+        }
+
+        private void btnModify_Click(object sender, EventArgs e)
+        {
+            DataGridViewRow row = null;
+
+            if (dgvUsers.SelectedRows.Count == 1)
+            {
+                row = dgvUsers.SelectedRows[0];
+            }
+            else if (dgvUsers.SelectedCells.Count == 1)
+            {
+                int i = dgvUsers.SelectedCells[0].RowIndex;
+                row = dgvUsers.Rows[i];
+            }
+            else
+            {
+                MessageBox.Show(
+                    "Debes seleccionar solo 1 usuario a modificar",
+                    "Información",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
+
+            if (row != null)
+            {
+                int id = Int32.Parse(row.Cells[0].Value.ToString());
+                users localUser = (from em in entities.users
+                                   where em.id == id
+                                   select em).First();
+
+                Usuario usuario = new Usuario();
+                usuario.setUsuario(localUser);
+                usuario.ShowDialog(this);
+            }
+
+
         }
     }
 }

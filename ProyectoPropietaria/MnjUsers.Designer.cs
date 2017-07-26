@@ -100,6 +100,7 @@
             this.btnModify.TabIndex = 12;
             this.btnModify.Text = "Modificar";
             this.btnModify.UseVisualStyleBackColor = true;
+            this.btnModify.Click += new System.EventHandler(this.btnModify_Click);
             // 
             // btnAdd
             // 
@@ -109,6 +110,7 @@
             this.btnAdd.TabIndex = 13;
             this.btnAdd.Text = "Agregar";
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // MnjUsers
             // 
@@ -128,6 +130,7 @@
             this.MinimizeBox = false;
             this.Name = "MnjUsers";
             this.Text = "Usuarios";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MnjUsers_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.dgvUsers)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

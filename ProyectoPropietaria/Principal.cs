@@ -148,7 +148,7 @@ namespace ProyectoPropietaria
 
         private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new MnjUsers().ShowDialog(this);
+            MnjUsers.getInstance().ShowDialog(this);
         }
     }
 }
