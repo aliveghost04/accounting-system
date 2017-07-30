@@ -51,6 +51,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.lblYear = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnExport = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMovements)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -67,7 +68,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(350, 527);
+            this.btnClose.Location = new System.Drawing.Point(323, 527);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 1;
@@ -277,11 +278,22 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Detalles";
             // 
+            // btnExport
+            // 
+            this.btnExport.Location = new System.Drawing.Point(404, 527);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(75, 23);
+            this.btnExport.TabIndex = 24;
+            this.btnExport.Text = "Exportar";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
             // Reporte
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 562);
+            this.Controls.Add(this.btnExport);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label1);
@@ -330,5 +342,6 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label lblYear;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button btnExport;
     }
 }

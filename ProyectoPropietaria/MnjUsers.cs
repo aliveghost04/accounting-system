@@ -18,7 +18,7 @@ namespace ProyectoPropietaria
         private MnjUsers()
         {
             InitializeComponent();
-            entities = new ContabilidadEntities();
+            entities = ConnectionDB.getInstance().getEntities();
             loadUsers("");
         }
 

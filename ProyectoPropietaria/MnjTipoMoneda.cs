@@ -13,12 +13,13 @@ namespace ProyectoPropietaria
 {
     public partial class MnjTipoMoneda : Form
     {
-        ContabilidadEntities entities = new ContabilidadEntities();
+        ContabilidadEntities entities;
         private static MnjTipoMoneda instance = null;
 
         private MnjTipoMoneda()
         {
             InitializeComponent();
+            entities = ConnectionDB.getInstance().getEntities();
             loadCurrenciesTypes("");
             managePermission();
         }
@@ -221,8 +222,7 @@ namespace ProyectoPropietaria
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error
                             );
-                            entities.Dispose();
-                            entities = new ContabilidadEntities();
+                            ConnectionDB.getInstance().resetConnection();
                         }
                     }
                     loadCurrenciesTypes("");

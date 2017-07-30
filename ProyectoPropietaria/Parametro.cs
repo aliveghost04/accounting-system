@@ -13,21 +13,29 @@ namespace ProyectoPropietaria
     public partial class Parametro : Form
     {
         ContabilidadEntities entities;
-        parameters parameter = null;
+        parameters parameter;
 
         public Parametro()
         {
             InitializeComponent();
-            entities = new ContabilidadEntities();
-            parameter = entities.parameters.First();
+            entities = ConnectionDB.getInstance().getEntities();
+            try
+            {
+                parameter = entities.parameters.First();
+            } catch (Exception e) {
+                parameter = null;
+            }
             loadParamater();
         }
 
         public void loadParamater() {
-            txtRnc.Text = parameter.rnc;
-            dtMonth.Value = new DateTime(2017, parameter.month, 26);
-            dtCloseMonth.Value = new DateTime(2017, parameter.month_close, 26);
-            dtYear.Value = new DateTime(parameter.year, 7, 26);
+            if (parameter != null)
+            {
+                txtRnc.Text = parameter.rnc;
+                dtMonth.Value = new DateTime(2017, parameter.month, 26);
+                dtCloseMonth.Value = new DateTime(2017, parameter.month_close, 26);
+                dtYear.Value = new DateTime(parameter.year, 7, 26);
+            }
         }
 
         private void label1_Click(object sender, EventArgs e)

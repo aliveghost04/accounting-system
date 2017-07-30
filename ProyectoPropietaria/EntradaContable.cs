@@ -12,7 +12,7 @@ namespace ProyectoPropietaria
 {
     public partial class EntradaContable : Form
     {
-        private ContabilidadEntities entities = new ContabilidadEntities();
+        private ContabilidadEntities entities;
         private List<placements_movements> movements;
         private List<countables_accounts> accounts;
         private List<currencies_types> currencies;
@@ -23,10 +23,11 @@ namespace ProyectoPropietaria
         private EntradaContable()
         {
             InitializeComponent();
+            entities = ConnectionDB.getInstance().getEntities();
             movements = new List<placements_movements>();
 
             accounts = (from em in entities.countables_accounts
-                        where em.allow_transaction == true
+                        where em.allow_transaction == true && em.state == true
                         select em).ToList();
 
             cbAccount.DataSource = accounts;
@@ -109,20 +110,22 @@ namespace ProyectoPropietaria
                 try
                 {
                     entities.placements.Add(placement);
-                    entities.SaveChanges();
-
+                    
                     foreach (var el in movements)
                     {
                         el.placement_id = placement.id;
                         entities.placements_movements.Add(el);
                     }
-
                     entities.SaveChanges();
+
                     MnjEntradaContable.getInstance().mayorize(placement);
+                    
                     transaction.Commit();
                     created = true;
                 }
-                catch (Exception) {
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
                     transaction.Rollback();
                 }
             };
@@ -177,7 +180,14 @@ namespace ProyectoPropietaria
             {
                 movements.Add(movement);
                 fillMovements(null);
+                cleanMovementsFields();
             }
+        }
+
+        private void cleanMovementsFields() {
+            txtAmount.Text = "";
+            cbAccount.SelectedIndex = 0;
+            cbMovementType.SelectedIndex = 0;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -268,6 +278,13 @@ namespace ProyectoPropietaria
             if (movement.amount <= 0)
             {
                 sb.Append("- El monto introducido debe ser mayor a 0\n");
+            }
+
+            bool alreadyMovement = movements.Count(em => em.account == movement.account) > 0;
+
+            if (alreadyMovement)
+            {
+                sb.Append("- Ya existe un movimiento con esta cuenta\n");
             }
 
             return sb.ToString();

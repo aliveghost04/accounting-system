@@ -57,6 +57,7 @@
     <Compile Include="account_types.cs">
       <DependentUpon>ContabilidadEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="ConnectionDB.cs" />
     <Compile Include="ContabilidadEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

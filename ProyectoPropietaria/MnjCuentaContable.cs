@@ -13,12 +13,13 @@ namespace ProyectoPropietaria
 {
     public partial class MnjCuentaContable : Form
     {
-        ContabilidadEntities entities = new ContabilidadEntities();
+        ContabilidadEntities entities;
         private static MnjCuentaContable instance = null;
 
         private MnjCuentaContable()
         {
             InitializeComponent();
+            entities = ConnectionDB.getInstance().getEntities();
             loadCountablesAccounts("");
             managePermission();
         }
@@ -90,17 +91,31 @@ namespace ProyectoPropietaria
                 entities.countables_accounts.Add(accountCountable);
             }
 
-            entities.SaveChanges();
+            try
+            {
+                entities.SaveChanges();
 
-            MessageBox.Show(
-                "¡Cambios guardados con éxito!",
-                "Información",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
+                MessageBox.Show(
+                    "¡Cambios guardados con éxito!",
+                    "Información",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
 
-            loadCountablesAccounts("");
-            return true;
+                loadCountablesAccounts("");
+                return true;
+            }
+            catch (Exception ex) {
+                MessageBox.Show(
+                    "¡No se pudo guardar los cambios!",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+
+                loadCountablesAccounts("");
+                return false;
+            }
         }
 
         public static MnjCuentaContable getInstance() {
@@ -119,9 +134,20 @@ namespace ProyectoPropietaria
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            CuentaContable cuentaContable = CuentaContable.getInstance();
-            cuentaContable.ShowDialog(this);
-            cuentaContable.Focus();
+            if (entities.account_types.Count(em => em.state == true) > 0)
+            {
+                CuentaContable cuentaContable = CuentaContable.getInstance();
+                cuentaContable.ShowDialog(this);
+                cuentaContable.Focus();
+            } else
+            {
+                MessageBox.Show(
+                    "No se puede agregar cuentas. \nNo hay tipos de cuentas disponibles",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
         }
 
         private void btnModify_Click(object sender, EventArgs e)
@@ -228,8 +254,7 @@ namespace ProyectoPropietaria
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error
                             );
-                            entities.Dispose();
-                            entities = new ContabilidadEntities();
+                            ConnectionDB.getInstance().resetConnection();
                         }
                     }
                 }

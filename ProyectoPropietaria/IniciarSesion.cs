@@ -14,12 +14,13 @@ namespace ProyectoPropietaria
 {
     public partial class IniciarSesion : Form
     {
-        private ContabilidadEntities entities = new ContabilidadEntities();
+        private ContabilidadEntities entities;
         private static IniciarSesion instance = null;
         
         private IniciarSesion()
         {
             InitializeComponent();
+            entities = ConnectionDB.getInstance().getEntities();
         }
 
         private void button1_Click(object sender, EventArgs e)

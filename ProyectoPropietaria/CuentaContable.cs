@@ -14,11 +14,12 @@ namespace ProyectoPropietaria
     {
         private static CuentaContable instance = null;
         private countables_accounts countableAccount = null;
-        ContabilidadEntities entities = new ContabilidadEntities();
+        ContabilidadEntities entities;
 
         private CuentaContable()
         {
             InitializeComponent();
+            entities = ConnectionDB.getInstance().getEntities();
             initialize();
         }
 

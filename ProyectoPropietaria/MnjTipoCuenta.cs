@@ -13,12 +13,13 @@ namespace ProyectoPropietaria
 {
     public partial class MnjTipoCuenta : Form
     {
-        ContabilidadEntities entities = new ContabilidadEntities();
+        ContabilidadEntities entities;
         private static MnjTipoCuenta instance = null;
 
         private MnjTipoCuenta()
         {
             InitializeComponent();
+            entities = ConnectionDB.getInstance().getEntities();
             loadAccountTypes("");
             managePermission();
         }
@@ -212,8 +213,7 @@ namespace ProyectoPropietaria
                                 MessageBoxIcon.Error
                             );
 
-                            entities.Dispose();
-                            entities = new ContabilidadEntities();
+                            ConnectionDB.getInstance().resetConnection();
                         }
                     }
                 }

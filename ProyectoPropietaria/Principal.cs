@@ -16,10 +16,12 @@ namespace ProyectoPropietaria
         public static User user;
         public static bool showLogin = false;
         private static Contabilidad instance;
+        private ContabilidadEntities entities;
 
         private Contabilidad()
         {
             InitializeComponent();
+            entities = ConnectionDB.getInstance().getEntities();
         }
 
         public void setUser(User user) {
@@ -47,7 +49,7 @@ namespace ProyectoPropietaria
 
         private void parametrosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new Parametro().Show();
+            new Parametro().ShowDialog(this);
         }
 
         private void cuentasContablesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -143,7 +145,19 @@ namespace ProyectoPropietaria
 
         private void reportesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new Reporte().ShowDialog(this);
+            if (entities.parameters.Count() == 1)
+            {
+                new Reporte().ShowDialog(this);
+            }
+            else
+            {
+                MessageBox.Show(
+                    "No se puede ver reportes. \nNo se han configurado los parametros del sistema",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
         }
 
         private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)

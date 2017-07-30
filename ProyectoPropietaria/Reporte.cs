@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,17 +14,18 @@ namespace ProyectoPropietaria
     public partial class Reporte : Form
     {
         ContabilidadEntities entities;
+        parameters parameter;
         public Reporte()
         {
             InitializeComponent();
-            entities = new ContabilidadEntities();
+            entities = ConnectionDB.getInstance().getEntities();
 
             List<countables_accounts> accounts = entities.countables_accounts.ToList();
             accounts.Insert(0, new countables_accounts { description = "---- Todas ----"});
             cbAccounts.DataSource = accounts;
             cbAccounts.DisplayMember = "description";
 
-            parameters parameter = entities.parameters.First();
+            parameter = entities.parameters.First();
             lblRnc.Text = parameter.rnc;
             lblCloseMonth.Text = new DateTime(2010, parameter.month_close, 5).ToString("MMMM");
             lblMonth.Text = new DateTime(2010, parameter.month, 5).ToString("MMMM");
@@ -52,7 +54,6 @@ namespace ProyectoPropietaria
                                            em2.state
                                        }).ToList();
 
-         
             dgvMovements.Columns[0].HeaderText = "Descripción";
             dgvMovements.Columns[1].HeaderText = "Fecha";
             dgvMovements.Columns[2].HeaderText = "Cuenta";
@@ -84,7 +85,62 @@ namespace ProyectoPropietaria
                 account = cAccount.description;
             }
 
-            loadMovements(account, txtDescription.Text, dtFrom.Value, dtTo.Value);
+            DateTime dateFrom = new DateTime(dtFrom.Value.Year, dtFrom.Value.Month, dtFrom.Value.Day);
+            DateTime dateTo = new DateTime(dtTo.Value.Year, dtTo.Value.Month, dtTo.Value.Day);
+            dateTo = dateTo.AddMilliseconds(-1);
+            dateTo = dateTo.AddDays(1);
+            loadMovements(account, txtDescription.Text, dateFrom, dateTo);
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.CheckPathExists = true;
+            sfd.DefaultExt = ".csv";
+            sfd.Filter = "Comma separated value (*.csv)|*.csv";
+            sfd.FilterIndex = 0;
+            sfd.AddExtension = true;
+            sfd.FileName = lblRnc.Text + "_" + DateTime.Now.ToString("yyy-MM-dd-H-m-s");
+            
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                if (sfd.FileName.Length > 0)
+                {
+                    StreamWriter sw = new StreamWriter(sfd.FileName, false, Encoding.UTF8);
+                    sw.WriteLine("RNC, Mes Cierre, Mes, Año");
+                    sw.WriteLine(lblRnc.Text + "," + lblCloseMonth.Text + "," + lblMonth.Text + "," + lblYear.Text + "\n");
+                    sw.WriteLine("Descripción,Fecha,Cuenta,Tipo,Monto,Tasa de Cambio,Total,Estado");
+
+                    foreach (DataGridViewRow el in dgvMovements.Rows)
+                    {
+                        sw.Write(el.Cells[0].Value + ",");
+                        sw.Write(el.Cells[1].Value + ",");
+                        sw.Write(el.Cells[2].Value + ",");
+                        sw.Write(el.Cells[3].Value + ",");
+                        sw.Write(el.Cells[4].Value + ",");
+                        sw.Write(el.Cells[5].Value + ",");
+                        sw.Write(el.Cells[6].Value + ",");
+                        sw.WriteLine(el.Cells[7].Value);
+                    }
+                    sw.Close();
+
+                    MessageBox.Show(
+                        "¡Datos exportados con éxito!",
+                        "Información",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Debe seleccionar un directorio a guardar",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+                }
+            }
         }
     }
 }

@@ -20,7 +20,7 @@ namespace ProyectoPropietaria
         public Usuario()
         {
             InitializeComponent();
-            entities = new ContabilidadEntities();
+            entities = ConnectionDB.getInstance().getEntities();
             userLevels = new List<UserLevel>() {
                 new UserLevel { name = "Administrador", value = 1 },
                 new UserLevel { name = "Normal", value = 3 }

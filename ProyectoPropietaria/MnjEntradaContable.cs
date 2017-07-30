@@ -13,12 +13,13 @@ namespace ProyectoPropietaria
 {
     public partial class MnjEntradaContable : Form
     {
-        ContabilidadEntities entities = new ContabilidadEntities();
+        ContabilidadEntities entities;
         private static MnjEntradaContable instance = null;
 
         private MnjEntradaContable()
         {
             InitializeComponent();
+            entities = ConnectionDB.getInstance().getEntities();
             loadPlacements("");
             managePermission();
         }
@@ -140,18 +141,30 @@ namespace ProyectoPropietaria
         {
             int accountQuantity =
                 (from em in entities.countables_accounts
-                 where em.allow_transaction == true
+                 where em.allow_transaction == true && em.state == true
                  select em).Count();
 
-            if (accountQuantity > 1)
+            int currencyQuantity = entities.currencies_types.Count(em => em.state == true);
+
+            if (accountQuantity > 1 && currencyQuantity > 0)
             {
                 EntradaContable entradaContable = EntradaContable.getInstance();
-                entradaContable.Show();
-                entradaContable.Focus();
+                entradaContable.ShowDialog(this);
             } else
             {
+                StringBuilder sb = new StringBuilder();
+                if (accountQuantity < 2)
+                {
+                    sb.Append("- No hay suficientes cuentas activas que permitan transacciones\n");
+                }
+
+                if (currencyQuantity < 1)
+                {
+                    sb.Append("- No hay tipos de monedas activas\n");
+                }
+
                 MessageBox.Show(
-                    "No se puede agregar entradas. \nNo hay suficientes cuentas que permitan transacciones",
+                    "No se puede agregar entradas.\n\n" + sb.ToString(),
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
