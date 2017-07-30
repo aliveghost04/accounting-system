@@ -164,5 +164,15 @@ namespace ProyectoPropietaria
         {
             MnjUsers.getInstance().ShowDialog(this);
         }
+
+        private void acercaDeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(
+                "Sistema de Contabilidad\nHecho por Erick Jiménez\nCopyright © 2017",
+                "Acerca de",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
+        }
     }
 }
